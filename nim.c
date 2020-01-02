@@ -1,4 +1,3 @@
-/*da6ddbdce00373c123d81645b2b6dc0c20957f97*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -69,7 +68,7 @@ int max(int *nlig, int *ncol)
 }
 struct T_Tab_Case Hasard_Ban(int nban,int *nlig,int *ncol)
 {
-	int ligne, colonne, i;
+	int ligne, colonne, i,bannissable,z;
 	struct T_Tab_Case table_cases_bannies;
 	for(i=0;i<nban;i++)
 	{
@@ -77,7 +76,26 @@ struct T_Tab_Case Hasard_Ban(int nban,int *nlig,int *ncol)
 		{
 			ligne=rand()%max(nlig,ncol)+1;
 			colonne=rand()%max(nlig,ncol)+1;
-		}while((ligne==1 && colonne<*ncol) || (colonne==1 && ligne<*nlig) ||(ligne==*nlig && colonne>1) || (colonne==*ncol && ligne>1) );
+			bannissable=1;
+			for(z=0;z<nban;z++)
+			{
+				if((table_cases_bannies.tab[z].indice_ligne==ligne)&&(table_cases_bannies.tab[z].indice_colonne==colonne))
+				{
+					bannissable=0;
+					break;
+				}
+				else if((table_cases_bannies.tab[z].indice_ligne==ligne+1)&&(table_cases_bannies.tab[z].indice_colonne==colonne-1))
+				{
+					bannissable=0;
+					break;
+				}
+				else if((table_cases_bannies.tab[z].indice_ligne==ligne-1)&&(table_cases_bannies.tab[z].indice_colonne==colonne+1))
+					{
+						bannissable=0;
+						break;
+					}
+			}
+		}while((ligne==1 && colonne<*ncol) || (colonne==1 && ligne<*nlig) ||(ligne==*nlig && colonne>1) || (colonne==*ncol && ligne>1) || (bannissable==0));
 	table_cases_bannies.tab[i].indice_ligne=ligne;
 	table_cases_bannies.tab[i].indice_colonne=colonne;
 	}
