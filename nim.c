@@ -118,7 +118,10 @@ struct T_Tab_Case Hasard_Ban(int nban,int *nlig,int *ncol)
 }
 int Affichage_Grille(struct T_Case pion, struct T_Tab_Case ban, int nlig, int ncol, int nban)
 {
-	int i,z,nb;
+    int i;
+    for (i=0; i<ncol; i++)
+        switch ()
+	/*int i,z,nb;
 	char premiere_ligne[50]="  ";
 	char colonnes[10]="";
 	char lignes[50]="";
@@ -127,14 +130,14 @@ int Affichage_Grille(struct T_Case pion, struct T_Tab_Case ban, int nlig, int nc
 	char test[50]="";
 	for(i=1;i<=ncol;i++)
 	{
-		sprintf(colonnes,"  %d",i);
+		sprintf(colonnes,"%d",i);
 		strcat(premiere_ligne,colonnes);
 
 	}
 	printf("%s\n",premiere_ligne);
 	for(z=1;z<=nlig;z++)
 	{
-		sprintf(lignes,"%d  ",z);
+		sprintf(lignes,"%d",z);
 		for(i=1;i<=ncol;i++)
 		{
 			if(nban==0)
@@ -167,7 +170,7 @@ int Affichage_Grille(struct T_Case pion, struct T_Tab_Case ban, int nlig, int nc
 		sprintf(test,"");
 	}
 	return 0;
-
+*/
 }
 void Calcul_Nimbers(int nim[][VMAX],int *nlig,int *ncol,int *nban,struct T_Tab_Case ban)
 {
@@ -211,7 +214,6 @@ void Calcul_Nimbers(int nim[][VMAX],int *nlig,int *ncol,int *nban,struct T_Tab_C
 						if(nim[a-1][b-1]==0)
 						{
 							nimber_voisine=0;
-
 						}
 
 					}
@@ -252,8 +254,6 @@ void Voisines(struct T_Case case_,int *nb_vois, struct T_Tab_Case *vois,int *nba
 					
 			}
 		}
-		
-		
 
 		if((case_bannie==0)&&(z<=*nlig))
 		{
