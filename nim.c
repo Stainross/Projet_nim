@@ -63,14 +63,14 @@ int Lire_Entier(int borne_inferieure,int borne_superieure)
 }
 void Parametres(int *nlig,int *ncol,int *niveau, int *next, int *nban)
 {
-	printf("Paramètres du jeu :\nnombre de lignes :");
+	printf("Paramètres du jeu :\nNombre de lignes :");
 	*nlig=Lire_Entier(VMIN,VMAX);
-	printf("nombre de colonnes :");
+	printf("Nombre de colonnes :");
 	*ncol=Lire_Entier(VMIN,VMAX);
 	*nban=rand()%(max(nlig,ncol)+1);
-	printf("nombre de cases bannies generees :%d\n",*nban);
+	printf("Nombre de cases bannies generees :%d\n",*nban);
 	
-	printf("niveau de 1 à 4 :");
+	printf("Niveau de 1 à 4 :");
 	*niveau=Lire_Entier(1,4);
 	printf("qui commence ?\nl'ordinateur (1) ou le joueur (2) :");
 	*next=Lire_Entier(1,2);
@@ -175,13 +175,13 @@ void Calcul_Nimbers(int nim[][VMAX],int *nlig,int *ncol,int *nban,struct T_Tab_C
 	int nb_vois=0;
 	struct T_Tab_Case vois;
 	struct T_Case case_;
-	for(z=0;z<*nlig;z++)
+	/*for(z=0;z<*nlig;z++)
 	{
 		for(i=0;i<*ncol;i++)
 		{
 			nim[z][i]=3;
 		}
-	}
+	}*/
 	nim[*nlig-1][*ncol-1]=0;
 	if(*nban!=0)
 	{
