@@ -20,14 +20,17 @@ struct T_Tab_Case Hasard_Ban(int,int *,int *);
 int Affichage_Grille(struct T_Case,struct T_Tab_Case, int, int, int);
 void Calcul_Nimbers(int nim[][VMAX],int ,int ,int ,struct T_Tab_Case);
 void Voisines(struct T_Case,int *, struct T_Tab_Case *,int , struct T_Tab_Case,int ,int );
+struct T_Case Coup_joueur(struct T_Case,int, struct T_Tab_Case, int ,int);
+struct T_Case Coup_Ordi_Hasard(struct T_Case,int,struct T_Tab_Case,int,int);
+struct T_Case Coup_Ordi_Gagnant(struct T_Case,int,struct T_Tab_Case,int,int,int nim[][VMAX]);
 
 int main()
-{int nlig,ncol,niveau,next,nban,i,zer,z;
+{int nlig,ncol,niveau,next,nban,i,zer,z,proba;
 	int nim[VMAX][VMAX];
 	struct T_Tab_Case ban,vois;
 	struct T_Case pion;
-	pion.indice_ligne=2;
-	pion.indice_colonne=2;
+	pion.indice_ligne=1;
+	pion.indice_colonne=1;
 	srand((unsigned int)time(NULL));
 	Parametres(&nlig,&ncol,&niveau,&next,&nban);
 	
@@ -41,17 +44,50 @@ int main()
 	zer=Affichage_Grille(pion,ban,nlig,ncol,nban);
 	
 	Calcul_Nimbers(nim,nlig,ncol,nban,ban);
-	/*Voisines(pion,&nb_vois,vois,&nban,ban,&nlig,&ncol);*/
-	for(i=0;i<nlig;i++)
+	while(1)
 	{
-		for(z=0;z<ncol;z++)
+		if(next%2==0)
 		{
-			printf("%d |",nim[i][z]);
+			pion=Coup_joueur(pion,nban,ban,nlig,ncol);
 		}
-		printf("\n");
-		
-	}
-	return 0;
+		else
+		{
+			if(niveau==1)
+			{
+				pion=Coup_Ordi_Hasard(pion,nban,ban,nlig,ncol);
+			}
+			else if(niveau==2)
+			{
+				proba=rand()%3;
+				if(proba==0)
+					pion=Coup_Ordi_Gagnant(pion,nban,ban,nlig,ncol,nim);
+				else
+					pion=Coup_Ordi_Hasard(pion,nban,ban,nlig,ncol);
+			}
+			else if(niveau=3)
+			{
+				proba=rand()%3;
+				if(proba==0)
+					pion=Coup_Ordi_Hasard(pion,nban,ban,nlig,ncol);
+				else
+					pion=Coup_Ordi_Gagnant(pion,nban,ban,nlig,ncol,nim);
+			}
+			else
+				pion=Coup_Ordi_Gagnant(pion,nban,ban,nlig,ncol,nim);
+		}
+		zer=Affichage_Grille(pion,ban,nlig,ncol,nban);
+		if(pion.indice_ligne==nlig && pion.indice_colonne==ncol)
+		{
+			if(next%2==0)
+				printf("C'est terminé. BRAVO TU AS GAGNE !");
+			else
+				printf("C'est terminé. DOMMAGE TU AS PERDU !");
+			return 0;
+		}
+		next++;
+		}
+	
+
 }
 int Lire_Entier(int borne_inferieure,int borne_superieure)
 {
@@ -288,4 +324,76 @@ void Voisines(struct T_Case case_,int *nb_vois, struct T_Tab_Case *vois,int nban
 		}
 	}
 
+}
+struct T_Case Coup_joueur(struct T_Case pion,int nban,struct T_Tab_Case ban,int nlig,int ncol)
+{
+	int nb_vois=0;
+	int i;
+	struct T_Tab_Case vois;
+	int choix;
+	printf("A toi de jouer !\n");
+	Voisines(pion,&nb_vois,&vois,nban,ban,nlig,ncol);
+	
+	if(nb_vois==1)
+	{
+		printf("Seule possibilite : (%d,%d)\nvalider --->",vois.tab[0].indice_ligne,vois.tab[0].indice_colonne);
+		scanf("%d",&choix);
+		pion.indice_ligne=vois.tab[0].indice_ligne;
+		pion.indice_colonne=vois.tab[0].indice_colonne;
+	}
+	else {
+		printf("choisir la destination ");
+		for(i=1;i<=nb_vois;i++)
+		{
+			printf("%d:(%d,%d) ",i,vois.tab[i-1].indice_ligne,vois.tab[i-1].indice_colonne);
+		}
+		do
+		{
+			printf("\n---> ");
+			while(getchar()!='\n');
+			scanf("%d",&choix);
+			if(choix<1 || choix>nb_vois)
+				printf("erreur !");
+
+				
+		}while(choix<1 || choix>nb_vois);
+		
+		pion.indice_ligne=vois.tab[choix-1].indice_ligne;
+		pion.indice_colonne=vois.tab[choix-1].indice_colonne;
+	}
+	
+
+	return pion;
+}
+struct T_Case Coup_Ordi_Hasard(struct T_Case pion,int nban,struct T_Tab_Case ban,int nlig,int ncol)
+{
+	int nb_vois=0;
+	int choix;
+	struct T_Tab_Case vois;
+	Voisines(pion,&nb_vois,&vois,nban,ban,nlig,ncol);
+	choix=rand()%nb_vois;
+	printf("L'ordinateur deplace le pion en (%d,%d)\n",vois.tab[choix].indice_ligne,vois.tab[choix].indice_colonne);
+	pion.indice_ligne=vois.tab[choix].indice_ligne;
+	pion.indice_colonne=vois.tab[choix].indice_colonne;
+	return pion;
+}
+struct T_Case Coup_Ordi_Gagnant(struct T_Case pion,int nban,struct T_Tab_Case ban,int nlig,int ncol,int nim[][VMAX])
+{
+	int nb_vois=0;int i=0;
+	int choix;
+	struct T_Tab_Case vois;
+	Voisines(pion,&nb_vois,&vois,nban,ban,nlig,ncol);
+	choix=rand()%nb_vois;
+	for(i=0;i<nb_vois;i++)
+	{
+		if(nim[vois.tab[i].indice_ligne-1][vois.tab[i].indice_colonne-1]==0)
+		{
+			choix=i;
+			break;
+		}
+	}
+	pion.indice_ligne=vois.tab[choix].indice_ligne;
+	pion.indice_colonne=vois.tab[choix].indice_colonne;
+	printf("L'ordinateur deplace le pion en (%d,%d)\n",vois.tab[choix].indice_ligne,vois.tab[choix].indice_colonne);
+	return pion;
 }
