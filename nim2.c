@@ -25,8 +25,8 @@ struct T_Case Coup_Ordi_Hasard(struct T_Case,int,struct T_Tab_Case,int,int);
 struct T_Case Coup_Ordi_Gagnant(struct T_Case,int,struct T_Tab_Case,int,int,int nim[][VMAX]);
 
 int main()
-{int nlig,ncol,niveau,next,nban,i,zer,z,proba;
-	int nim[VMAX][VMAX];
+{
+	int nlig,ncol,niveau,next,nban,variable_inutile,proba,nim[VMAX][VMAX];
 	struct T_Tab_Case ban,vois;
 	struct T_Case pion;
 	pion.indice_ligne=1;
@@ -34,14 +34,8 @@ int main()
 	srand((unsigned int)time(NULL));
 	Parametres(&nlig,&ncol,&niveau,&next,&nban);
 	
-	printf("%da%db%dc%dd%d",nlig,ncol,niveau,next,nban);
 	ban=Hasard_Ban(nban,&nlig,&ncol);
-	for(i=0;i<nban;i++){
-		printf("\n %d : ligne",ban.tab[i].indice_ligne);
-		printf("\n %d : colonne",ban.tab[i].indice_colonne);		
-	}
-	printf("\nposition pion : (%d,%d)\n",pion.indice_ligne,pion.indice_colonne);
-	zer=Affichage_Grille(pion,ban,nlig,ncol,nban);
+	variable_inutile=Affichage_Grille(pion,ban,nlig,ncol,nban);
 	
 	Calcul_Nimbers(nim,nlig,ncol,nban,ban);
 	while(1)
@@ -75,7 +69,7 @@ int main()
 			else
 				pion=Coup_Ordi_Gagnant(pion,nban,ban,nlig,ncol,nim);
 		}
-		zer=Affichage_Grille(pion,ban,nlig,ncol,nban);
+		variable_inutile=Affichage_Grille(pion,ban,nlig,ncol,nban);
 		if(pion.indice_ligne==nlig && pion.indice_colonne==ncol)
 		{
 			if(next%2==0)
@@ -156,28 +150,26 @@ struct T_Tab_Case Hasard_Ban(int nban,int *nlig,int *ncol)
 int Affichage_Grille(struct T_Case pion, struct T_Tab_Case ban, int nlig, int ncol, int nban)
 {
 	int i,z,nb;
-	char premiere_ligne[50]="  ";
-	char colonnes[10]="";
-	char lignes[50]="";
-	char caractere='-';
-	char cases[10]="";
-	char test[50]="";
+	char premiere_ligne[50]="   ",colonnes[10]="";
+	char lignes[50]="",caractere='-',cases[5]="",ligne_de_cases[50]="";
 	for(i=1;i<=ncol;i++)
 	{
-		sprintf(colonnes,"  %d",i);
+		if(i<10)sprintf(colonnes," %d ",i);
+		else sprintf(colonnes,"%d ",i);
 		strcat(premiere_ligne,colonnes);
 
 	}
 	printf("%s\n",premiere_ligne);
 	for(z=1;z<=nlig;z++)
 	{
-		sprintf(lignes,"%d  ",z);
+		if(z<10)sprintf(lignes,"%d  ",z);
+		else sprintf(lignes,"%d ",z);
 		for(i=1;i<=ncol;i++)
 		{
 			if(nban==0)
 			{
 				if((pion.indice_ligne==z)&&(pion.indice_colonne==i))
-						caractere='0';
+					caractere='0';
 				else
 					caractere='-';
 			}
@@ -197,11 +189,11 @@ int Affichage_Grille(struct T_Case pion, struct T_Tab_Case ban, int nlig, int nc
 			}
 			
 			sprintf(cases,"|%c|",caractere);
-			strcat(test,cases);
+			strcat(ligne_de_cases,cases);
 		}
-		strcat(lignes,test);
+		strcat(lignes,ligne_de_cases);
 		printf("%s\n",lignes);
-		sprintf(test,"");
+		sprintf(ligne_de_cases,"");
 	}
 	return 0;
 
@@ -243,9 +235,7 @@ void Calcul_Nimbers(int nim[][VMAX],int nlig,int ncol,int nban,struct T_Tab_Case
 
 					for(x=0;x<nb_vois;x++)
 					{
-						a=vois.tab[x].indice_ligne;
-						b=vois.tab[x].indice_colonne;
-						if(nim[a-1][b-1]==0)
+						if(nim[vois.tab[x].indice_ligne-1][vois.tab[x].indice_colonne-1]==0)
 						{
 							nimber_voisine=0;
 
@@ -328,9 +318,8 @@ void Voisines(struct T_Case case_,int *nb_vois, struct T_Tab_Case *vois,int nban
 struct T_Case Coup_joueur(struct T_Case pion,int nban,struct T_Tab_Case ban,int nlig,int ncol)
 {
 	int nb_vois=0;
-	int i;
+	int i,choix;
 	struct T_Tab_Case vois;
-	int choix;
 	printf("A toi de jouer !\n");
 	Voisines(pion,&nb_vois,&vois,nban,ban,nlig,ncol);
 	
@@ -379,8 +368,8 @@ struct T_Case Coup_Ordi_Hasard(struct T_Case pion,int nban,struct T_Tab_Case ban
 }
 struct T_Case Coup_Ordi_Gagnant(struct T_Case pion,int nban,struct T_Tab_Case ban,int nlig,int ncol,int nim[][VMAX])
 {
-	int nb_vois=0;int i=0;
-	int choix;
+	int nb_vois=0;
+	int choix,i;
 	struct T_Tab_Case vois;
 	Voisines(pion,&nb_vois,&vois,nban,ban,nlig,ncol);
 	choix=rand()%nb_vois;
