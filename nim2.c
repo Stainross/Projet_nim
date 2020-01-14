@@ -150,8 +150,8 @@ struct T_Tab_Case Hasard_Ban(int nban,int *nlig,int *ncol)
 int Affichage_Grille(struct T_Case pion, struct T_Tab_Case ban, int nlig, int ncol, int nban)
 {
 	int i,z,nb;
-	char premiere_ligne[50]="   ",colonnes[10]="";
-	char lignes[50]="",caractere='-',cases[5]="",ligne_de_cases[50]="";
+	char premiere_ligne[100]="   ",colonnes[10]="";
+	char lignes[100]="",caractere='-',cases[5]="",ligne_de_cases[100]="";
 	for(i=1;i<=ncol;i++)
 	{
 		if(i<10)sprintf(colonnes," %d ",i);
