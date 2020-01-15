@@ -1,6 +1,6 @@
 /*Projet Algo C par 
 CALVET Yann
-HOUVERSING Irma
+HOUVER SING Irma
 SAFSAF Sofyann*/
 
 
@@ -74,7 +74,7 @@ int main()
 				else
 					pion=Coup_Ordi_Hasard(pion,nban,ban,nlig,ncol);
 			}
-			else if(niveau=3)
+			else if(niveau==3)
 			{
 				proba=rand()%3;
 				if(proba==0)
@@ -184,8 +184,8 @@ int Affichage_Grille(struct T_Case pion, struct T_Tab_Case ban, int nlig, int nc
 	/*création de la ligne contenant les indices des colonnes*/
 	for(i=1;i<=ncol;i++)
 	{
-		if(i<10)sprintf(colonnes," %d ",i);
-		else sprintf(colonnes,"%d ",i);
+		//if(i<10)sprintf(colonnes," %.2d ",i);
+		/*else */sprintf(colonnes,"%.2d ",i);
 		strcat(premiere_ligne,colonnes);
 
 	}
@@ -193,8 +193,8 @@ int Affichage_Grille(struct T_Case pion, struct T_Tab_Case ban, int nlig, int nc
 	/*création des lignes suivantes*/
 	for(z=1;z<=nlig;z++)
 	{
-		if(z<10)sprintf(lignes,"%d  ",z);
-		else sprintf(lignes,"%d ",z);
+		//if(z<10)sprintf(lignes,"%d  ",z);
+		/*else */sprintf(lignes,"%.2d ",z);
 		for(i=1;i<=ncol;i++)
 		{
 			if(nban==0)
