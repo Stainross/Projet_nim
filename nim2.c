@@ -184,8 +184,7 @@ int Affichage_Grille(struct T_Case pion, struct T_Tab_Case ban, int nlig, int nc
 	/*création de la ligne contenant les indices des colonnes*/
 	for(i=1;i<=ncol;i++)
 	{
-		//if(i<10)sprintf(colonnes," %.2d ",i);
-		/*else */sprintf(colonnes,"%.2d ",i);
+        sprintf(colonnes,"%.2d ",i);
 		strcat(premiere_ligne,colonnes);
 
 	}
@@ -193,8 +192,7 @@ int Affichage_Grille(struct T_Case pion, struct T_Tab_Case ban, int nlig, int nc
 	/*création des lignes suivantes*/
 	for(z=1;z<=nlig;z++)
 	{
-		//if(z<10)sprintf(lignes,"%d  ",z);
-		/*else */sprintf(lignes,"%.2d ",z);
+        sprintf(lignes,"%.2d ",z);
 		for(i=1;i<=ncol;i++)
 		{
 			if(nban==0)
@@ -218,7 +216,6 @@ int Affichage_Grille(struct T_Case pion, struct T_Tab_Case ban, int nlig, int nc
 						caractere='-';
 				}
 			}
-			
 			sprintf(cases,"|%c|",caractere);
 			strcat(ligne_de_cases,cases);
 		}
@@ -227,8 +224,8 @@ int Affichage_Grille(struct T_Case pion, struct T_Tab_Case ban, int nlig, int nc
 		sprintf(ligne_de_cases,"");
 	}
 	return 0;
-
 }
+
 void Calcul_Nimbers(int nim[][VMAX],int nlig,int ncol,int nban,struct T_Tab_Case ban)
 {
 	int z,i,x,nimber_voisine,a,b;
@@ -272,9 +269,7 @@ void Calcul_Nimbers(int nim[][VMAX],int nlig,int ncol,int nban,struct T_Tab_Case
 						if(nim[vois.tab[x].indice_ligne-1][vois.tab[x].indice_colonne-1]==0)
 						{
 							nimber_voisine=0;
-
 						}
-
 					}
 					/*si nimber_voisine vaut 1 alors le nimber de la case vaut 0*/
 					if(nimber_voisine==1)
@@ -287,11 +282,9 @@ void Calcul_Nimbers(int nim[][VMAX],int nlig,int ncol,int nban,struct T_Tab_Case
 						nim[i-1][z-1]=1;
 					}
 				}
-				
 			}
 		}
 	}
-
 	
 }
 void Voisines(struct T_Case case_,int *nb_vois, struct T_Tab_Case *vois,int nban, struct T_Tab_Case ban,int nlig,int ncol)
@@ -302,7 +295,6 @@ void Voisines(struct T_Case case_,int *nb_vois, struct T_Tab_Case *vois,int nban
 	- vaut 0 sinon*/
 	int case_bannie=0;
 	*nb_vois=0;
-
 	/*on parcourt les 2 cases se trouvant à droite de la case actuelle*/
 	for(z=(case_.indice_ligne)+1;z<=(case_.indice_ligne)+2;z++)
 	{
@@ -316,11 +308,8 @@ void Voisines(struct T_Case case_,int *nb_vois, struct T_Tab_Case *vois,int nban
 						case_bannie=1;
 						break;
 					}
-					
 			}
 		}
-		
-		
 		/*si case_bannie vaut 0 et que la case se situe toujours dans la grille alors cette case est une voisine*/
 		if((case_bannie==0)&&(z<=nlig))
 		{
@@ -343,10 +332,8 @@ void Voisines(struct T_Case case_,int *nb_vois, struct T_Tab_Case *vois,int nban
 						case_bannie=1;
 						break;
 					}
-					
 			}
 		}
-		
 		/*si case_bannie vaut 0 et que la case se situe toujours dans la grille alors cette case est une voisine*/
 		if((case_bannie==0)&&(i<=ncol))
 		{
@@ -355,7 +342,6 @@ void Voisines(struct T_Case case_,int *nb_vois, struct T_Tab_Case *vois,int nban
 			vois->tab[*nb_vois-1].indice_ligne=case_.indice_ligne;
 		}
 	}
-
 }
 struct T_Case Coup_joueur(struct T_Case pion,int nban,struct T_Tab_Case ban,int nlig,int ncol)
 {
@@ -365,15 +351,16 @@ struct T_Case Coup_joueur(struct T_Case pion,int nban,struct T_Tab_Case ban,int 
 	printf("A toi de jouer !\n");
 	Voisines(pion,&nb_vois,&vois,nban,ban,nlig,ncol);
 	
-	if(nb_vois==1)
+	/*if(nb_vois==1)
 	{
 		printf("Seule possibilite : (%d,%d)\nvalider --->",vois.tab[0].indice_ligne,vois.tab[0].indice_colonne);
-		scanf("%d",&choix);
+		scanf("%d",&choix);*/
 		/*le pion se déplace*/
-		pion.indice_ligne=vois.tab[0].indice_ligne;
+		/*pion.indice_ligne=vois.tab[0].indice_ligne;
 		pion.indice_colonne=vois.tab[0].indice_colonne;
-	}
-	else {
+	}*/
+	/*else*/
+	{
 		printf("choisir la destination ");
 		/*affiche les destinations possibles*/
 		for(i=1;i<=nb_vois;i++)
@@ -385,21 +372,19 @@ struct T_Case Coup_joueur(struct T_Case pion,int nban,struct T_Tab_Case ban,int 
 		{
 			printf("\n---> ");
 			while(getchar()!='\n');
-			scanf("%d",&choix);
+			    scanf("%d",&choix);
 			if(choix<1 || choix>nb_vois)
 				printf("erreur !");
-
-				
-		}while(choix<1 || choix>nb_vois);
+		}
+		while(choix<1 || choix>nb_vois);
 		
 		/*le pion se déplace*/
 		pion.indice_ligne=vois.tab[choix-1].indice_ligne;
 		pion.indice_colonne=vois.tab[choix-1].indice_colonne;
 	}
-	
-
 	return pion;
 }
+
 struct T_Case Coup_Ordi_Hasard(struct T_Case pion,int nban,struct T_Tab_Case ban,int nlig,int ncol)
 {
 	int nb_vois=0;
@@ -414,6 +399,7 @@ struct T_Case Coup_Ordi_Hasard(struct T_Case pion,int nban,struct T_Tab_Case ban
 	pion.indice_colonne=vois.tab[choix].indice_colonne;
 	return pion;
 }
+
 struct T_Case Coup_Ordi_Gagnant(struct T_Case pion,int nban,struct T_Tab_Case ban,int nlig,int ncol,int nim[][VMAX])
 {
 	int nb_vois=0;
