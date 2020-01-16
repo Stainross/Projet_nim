@@ -89,9 +89,9 @@ int main()
 		if(pion.indice_ligne==nlig && pion.indice_colonne==ncol)
 		{
 			if(next%2==0)
-				printf("C'est terminé. BRAVO TU AS GAGNE !");
+				printf("C'est terminé. BRAVO TU AS GAGNE !\n");
 			else
-				printf("C'est terminé. DOMMAGE TU AS PERDU !");
+				printf("C'est terminé. DOMMAGE TU AS PERDU !\n");
 			return 0;
 		}
 		next++;
@@ -112,16 +112,16 @@ int Lire_Entier(int borne_inferieure,int borne_superieure)
 
 void Parametres(int *nlig,int *ncol,int *niveau, int *next, int *nban)
 {
-	printf("Paramètres du jeu :\nnombre de lignes :");
+	printf("Paramètres du jeu :\nNombre de lignes :");
 	*nlig=Lire_Entier(VMIN,VMAX);
-	printf("nombre de colonnes :");
+	printf("Nombre de colonnes :");
 	*ncol=Lire_Entier(VMIN,VMAX);
 	/*nban est un nombre aléatoire compris entre 0 et max(nlig,ncol) inclus*/
 	*nban=rand()%(max(nlig,ncol)+1);
-	printf("nombre de cases bannies generees :%d\n",*nban);
-	printf("niveau de 1 à 4 :");
+	printf("Nombre de cases bannies generees :%d\n",*nban);
+	printf("Niveau de 1 à 4 :");
 	*niveau=Lire_Entier(1,4);
-	printf("qui commence ?\nl'ordinateur (1) ou le joueur (2) :");
+	printf("Qui commence ?\nl'ordinateur (1) ou le joueur (2) :");
 	*next=Lire_Entier(1,2);
 }
 
@@ -345,6 +345,7 @@ void Voisines(struct T_Case case_,int *nb_vois, struct T_Tab_Case *vois,int nban
 		}
 	}
 }
+
 struct T_Case Coup_joueur(struct T_Case pion,int nban,struct T_Tab_Case ban,int nlig,int ncol)
 {
 	int nb_vois=0;
@@ -352,27 +353,26 @@ struct T_Case Coup_joueur(struct T_Case pion,int nban,struct T_Tab_Case ban,int 
 	struct T_Tab_Case vois;
 	printf("A toi de jouer !\n");
 	Voisines(pion,&nb_vois,&vois,nban,ban,nlig,ncol);
-	{
-		printf("Choisir la destination ");
-		/*affiche les destinations possibles*/
-		for(i=1;i<=nb_vois;i++)
-		{
-			printf("%d:(%d,%d) ",i,vois.tab[i-1].indice_ligne,vois.tab[i-1].indice_colonne);
-		}
-		/*sert à ne récupérer un choix que si il est possible*/
-		do
+	printf("Choisir la destination\n");
+	/*affiche les destinations possibles*/
+	if(nb_vois==1)
+	    printf("La seule possibilté de déplacement est\n");
+
+	for(i=1;i<=nb_vois;i++)
+		printf("%d:(%d,%d) ",i,vois.tab[i-1].indice_ligne,vois.tab[i-1].indice_colonne);
+	/*sert à ne récupérer un choix que si il est possible*/
+	do
 		{
 			printf("\n---> ");
 			while(getchar()!='\n');
 			    scanf("%d",&choix);
 			if(choix<1 || choix>nb_vois)
-				printf("erreur !");
+				printf("Erreur !");
 		}
-		while(choix<1 || choix>nb_vois);
-		/*le pion se déplace*/
-		pion.indice_ligne=vois.tab[choix-1].indice_ligne;
-		pion.indice_colonne=vois.tab[choix-1].indice_colonne;
-	}
+	while(choix<1 || choix>nb_vois);
+	/*le pion se déplace*/
+	pion.indice_ligne=vois.tab[choix-1].indice_ligne;
+	pion.indice_colonne=vois.tab[choix-1].indice_colonne;
 	return pion;
 }
 
