@@ -82,7 +82,9 @@ int main()
 					pion=Coup_Ordi_Gagnant(pion,nban,ban,nlig,ncol,nim);
 			}
 			else
+			{
 				pion=Coup_Ordi_Gagnant(pion,nban,ban,nlig,ncol,nim);
+			}
 		}
 		variable_inutile=Affichage_Grille(pion,ban,nlig,ncol,nban);
 		/*si le pion se trouve sur le puit, alors la partie s'arrête et on détermine le gagnant*/
@@ -117,7 +119,7 @@ void Parametres(int *nlig,int *ncol,int *niveau, int *next, int *nban)
 	printf("Nombre de colonnes :");
 	*ncol=Lire_Entier(VMIN,VMAX);
 	/*nban est un nombre aléatoire compris entre 0 et max(nlig,ncol) inclus*/
-	*nban=rand()%(max(nlig,ncol)+1);
+	*nban=1;//rand()%(max(nlig,ncol)+1);
 	printf("Nombre de cases bannies generees :%d\n",*nban);
 	printf("Niveau de 1 à 4 :");
 	*niveau=Lire_Entier(1,4);
@@ -137,7 +139,7 @@ struct T_Tab_Case Hasard_Ban(int nban,int *nlig,int *ncol)
 	int ligne, colonne, i,bannissable,z;
 	struct T_Tab_Case table_cases_bannies;
 	/*sert à déterminer nban cases bannies*/
-	for(i=0;i<=nban;i++)
+	for(i=0;i<nban;i++)
 	{
 		do
 		{
